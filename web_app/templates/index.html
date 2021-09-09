@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Welcome to Point Interpolation{% endblock %}
+        <div class="button_grid_container">
+            <div style="grid-column-start: 1;grid-column-end: 2;"> 
+                <form method ="GET" action= "{{url_for('add_storage_element',storage_name=current_storage_name) }}">
+                    <button name="add_button" type="submit" class="btn btn-primary" >Add storage element</button>
+                </form>
+            </div>
+
+            <div style="grid-column-start: 2;grid-column-end: 3;">
+                <form method ="GET" action= "{{url_for('interpolate_storage_element',storage_name=current_storage_name) }}">
+                    <button name="interpolate_button" type="submit" class="btn btn-primary" >Interpolate storage element</button>
+                </form>
+            </div>
+        </div> 
+    </h1>
+
+    <div class="storage_element_grid_container">
+
+
+        <div class= "column_name">
+            <b>Polynomial Number</b>
+        </div>
+
+        {% for pos, key_element in key_structure.items() %}
+        <div class= "column_name">
+            <b>{{key_element.name}} in {{key_element.unit}}</b>
+        </div>
+        {% endfor %}
+
+        <script >
+            var elements = document.getElementsByClassName("column_name");
+            var i;
+            for (i=0; i< elements.length;i++){
+                //elements[i].style.width= 100/elements.length+"%" ;
+                elements[i].style.backgroundColor="grey";
+
+                //arange in grid
+                elements[i].style.gridColumnStart= i+1;
+                elements[i].style.gridColumnEnd=i+2;
+                elements[i].style.gridRowStart=1;
+                elements[i].style.gridRowEnd=2;
+            }
+        </script>
+
+        {% for id,(key,polynomial_storage_element) in storage_content %}
+        <div class= "row_{{id}}">
+            <a href="{{ url_for('storage_element', storage_element_key=key, storage_name=current_storage_name) }}">
+                Polynomial {{id}}
+            </a>
+        </div>
+
+        {% for key_value in key %}
+        <div class="row_{{id}}" >
+            {{key_value}}
+        </div>
+        {% endfor %}
+
+        <script>
+            var elements= document.getElementsByClassName("row_{{id}}")
+            var i;
+            for(i=0;i<elements.length;i++){
+                elements[i].style.gridRowStart="{{id+2}}";
+                elements[i].style.gridRowEnd="{{id+3}}";
+                if ("{{id}}" % 2==0){
+                    elements[i].style.backgroundColor="#BDBDBD";
+                } else{
+                    elements[i].style.backgroundColor="#D1D0D0";
+                }
+            }
+            
+
+        </script>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

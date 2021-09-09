@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Add a new Storage element {% endblock %}</h1>
+
+<form method="post">
+    {% for pos, key_element in key_structure.items() %}
+
+    <p>Key {{pos}}: {{ key_element.name }}</p>
+    <div class="form-group">
+        <label for="{{ pos }}"></label>
+        <input type="text" name="{{ pos }}"
+               placeholder="value to be set for that key" class="form-control"
+               value="{{ request.form['{{ pos }}'] }}"></input>
+    </div>
+
+    {% endfor %}
+
+    <p>Path to excel</p>
+    <div class="form-group">
+        <label for="dest_path"></label>
+        <input type="text" name="dest_path"
+               placeholder="dest_path" class="form-control"
+               value="{{ request.form['dest_path'] }}"></input>
+    </div>
+
+    <p>column name of feature</p>
+    <div class="form-group">
+        <label for="col_feature"></label>
+        <input type="text" name="col_feature"
+               placeholder="col_feature" class="form-control"
+               value="{{ request.form['col_feature'] }}"></input>
+    </div>
+
+    <p>column name of target variable</p>
+    <div class="form-group">
+        <label for="col_target"></label>
+        <input type="text" name="col_target"
+               placeholder="col_target" class="form-control"
+               value="{{ request.form['col_target'] }}"></input>
+    </div>
+
+    <p>degree of polynomial</p>
+    <div class="form-group">
+        <label for="polynomial_degree"></label>
+        <input type="text" name="polynomial_degree"
+               placeholder="polynomial_degree" class="form-control"
+               value="{{ request.form['polynomial_degree'] }}"></input>
+    </div>
+
+    <p>filter criteria of data</p>
+    <div class="form-group">
+        <label for="filter_criteria"></label>
+        <input type="text" name="filter_criteria"
+               placeholder="filter_criteria" class="form-control"
+               value="{{ request.form['filter_criteria'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+{% endblock %}

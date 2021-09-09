@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{% block title %} Polynomial {% endblock %}</h2>
+
+    <h5> Keys </h5>
+    <div class="key_grid_container" >
+        {% for pos,key_element in key_structure.items() %}
+            <div class= "key_elements" style="grid-column-start: 0;grid-column-end: 1;background-color: grey;">
+                <b>{{key_element.name}} in {{key_element.unit}}</b>
+            </div>
+        {%endfor%}
+
+        {% for key_value in storage_element_key %}
+            <div class= "key_content" style="grid-column-start: 1;grid-column-end: 2;grid-row-start: 1 ;background-color: #BDBDBD;">
+                {{key_value}}
+            </div>
+        {%endfor%}
+        <script>
+            var elements = document.getElementsByClassName("key_content");
+            var i;
+            for(i=0;i<elements.length;i++){
+                elements[i].style.gridRowStart=i+1;
+                elements[i].style.gridRowEnd=i+2;
+            }
+        </script>
+    </div>
+
+
+    <h5> Coefficients </h5>
+    <div class="coefficients_grid_container">
+        <div class="row_name">
+            <b>Degree</b>
+        </div>
+        <div class="row_name">
+            <b>Coefficient</b>
+        </div>
+
+        <script>
+            var elements = document.getElementsByClassName("row_name");
+            var i;
+            for (i=0; i< elements.length;i++){
+                elements[i].style.backgroundColor="grey";
+
+                //arange in grid
+                elements[i].style.gridColumnStart= 0;
+                elements[i].style.gridColumnEnd=1;
+            }
+        </script>
+
+    {% for degree,coef in storage_element.polynomial.get_coefficients() %}
+        <div class="column_content_{{degree}}">
+            {{degree}}
+        </div>
+        <div class="column_content_{{degree}}">
+            {{coef}}
+        </div>   
+        
+        <script>
+            var elements= document.getElementsByClassName("column_content_{{degree}}")
+            var i;
+            elements[0].style.gridColumnStart="{{degree+1}}";
+            elements[0].style.gridColumnEnd="{{degree+2}}";
+            elements[0].style.gridRowStart=1;
+            elements[0].style.gridRowEnd=2;
+            elements[1].style.gridColumnStart="{{degree+1}}";
+            elements[1].style.gridColumnEnd="{{degree+2}}";
+            elements[1].style.gridRowStart=2;
+            elements[1].style.gridRowEnd=3;
+            if ("{{degree}}" % 2==0){
+                    elements[0].style.backgroundColor="#BDBDBD";
+                    elements[1].style.backgroundColor="#BDBDBD";
+                } else{
+                    elements[0].style.backgroundColor="#D1D0D0";
+                    elements[1].style.backgroundColor="#D1D0D0";
+                }
+        </script>
+
+    {%endfor%}
+
+    </div>
+
+    <h5 style="padding-top: 2%;"> Plot </h5>
+    <div class="plot_grid_container">
+
+        <div class="plot" style="grid-column-start: 1;grid-column-end: 2;">
+            <img src= "data:image/png;base64,{{encoded_image}}" alt="failed to load plot" >
+        </div>
+
+        <div class="plot_config" style="grid-column-start: 2;grid-column-end: 3;padding-top: 50%;">
+            <form method="POST">
+
+                <input type="text" name="x_start"
+                    placeholder="x_start" class="form-control"
+                    value="{{ request.form['x_start'] }}" ></input>
+                <input type="text" name="x_end"
+                    placeholder="x_end" class="form-control"
+                    value="{{ request.form['x_end'] }}" ></input>
+            
+                <button type="submit" class="btn btn-primary" >Set</button>
+
+            </form>
+        </div> 
+    </div>
+
+    <h5> Evaluate </h5>
+    <form method="POST">
+        <div class= "evaluation_grid_container">
+            
+                <div class="form-group" style="grid-column-start: 1;grid-column-end: 2;grid-row-start: 1;grid-row-end: 2;">
+                    <input type="text" name="points_to_evaluate"
+                        placeholder="points_to_evaluate" class="form-control"
+                        value="{{ request.form['points_to_evaluate'] }}"></input>
+                </div>
+
+                <div class="form-group" style="grid-column-start: 2;grid-column-end: 3;grid-row-start: 1;grid-row-end: 2;">
+                    <button type="submit" class="btn btn-primary">Evaluate</button>
+                </div>
+
+                {% if evaluation!=None  %}
+                <div style="grid-row-start: 2;">
+                    {{ evaluation }}
+                </div>
+                {% endif %}
+
+        </div>
+    </form>
+
+    <h5> Error </h5>
+
+    <div class="error_grid_container">
+        <div style="grid-column-start: 1;grid-column-end: 2;background-color: grey;">
+            <b>total error</b>
+        </div>
+        <div style="grid-column-start: 2;grid-column-end: 3;background-color: #BDBDBD;">
+            {{storage_element.error_history.sum_errors()}}
+        </div>        
+
+        <div style="grid-column-start: 1;grid-column-end: 2;grid-row-start: 2;background-color: grey;">
+            <b>error history</b>
+        </div>
+        <div style="grid-column-start: 2;grid-column-end: 3;grid-row-start:2;background-color: #BDBDBD;">
+            {%for line in storage_element.error_history.render_history(verbose=False) %}
+            <p  class="tree_paragraph">{{ line }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
