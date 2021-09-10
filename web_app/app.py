@@ -28,10 +28,9 @@ from polynomial_storage import Polynomial_storage, Key_element, Storage_manager
 #globals
 STORAGE_PATH=BASE_PATH.joinpath("web_app","permanent_storage")
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dieser wundervolle key beschuetzt meine Daten'
-
+app.config['EXPLAIN_TEMPLATE_LOADING']= True
 
 @app.route('/', methods=('GET','POST'))
 def start_page():
@@ -128,8 +127,19 @@ def add_storage_element(storage_name):
         col_target= request.form['col_target']
         polynomial_degree= int(request.form['polynomial_degree'])
 
-        filter_criteria= request.form['filter_criteria']
-        filter_func=  lambda df: exec(filter_criteria)
+        filter_func= None
+        if request.form['filter_column']!="":
+            filter_column= request.form['filter_column']
+            filter_value= request.form['filter_value']
+            
+            #try to convert the filter_value to numeric if possible
+            try:
+                filter_value= float(filter_value)
+            except ValueError:
+                pass
+
+            filter_func= lambda df: df.loc[df[filter_column]==filter_value] 
+            
 
         #store the object
         #filter_func= lambda df: df.loc[df["Schwenkwangenanstellung"]==key_kwargs["schwenkwangenanstellung"]]

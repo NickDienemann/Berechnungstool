@@ -1,0 +1,49 @@
+
+.tree_paragraph{
+    white-space: pre;
+    line-height: 1;
+}
+
+.storage_element_grid_container{
+    display: grid;
+}
+
+.coefficients_grid_container{
+    display:grid;
+    background: white;
+    grid-gap: 1px;
+}
+
+.key_grid_container{
+    display:grid;
+    background: white;
+    grid-gap: 1px;
+}
+
+.plot_grid_container{
+    display:grid;
+}
+
+.evaluation_grid_container{
+    display:grid;
+}
+
+.error_grid_container{
+    display:grid;
+    background: white;
+    grid-gap: 1px;
+}
+
+.storages_grid_container{
+    display:grid;
+    background: white;
+    grid-gap: 1px;
+}
+
+.button_grid_container{
+    display:grid;
+}
+
+.key_structure_grid_container{
+    display:grid;
+}

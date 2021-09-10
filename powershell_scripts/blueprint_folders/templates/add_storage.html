@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Add a new Storage {% endblock %}</h1>
+
+<form method="post">
+
+
+
+    <div class="form-group">
+        <input type="text" name="storage_name"
+               placeholder="name of the storage" class="form-control"
+               value="{{ request.form['storage_name'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <input type="text" name="key_elements"
+               placeholder="structure of keys to be used" class="form-control"
+               value="{{ request.form['key_elements'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+</form>
+
+{% endblock %}

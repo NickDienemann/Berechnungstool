@@ -48,20 +48,12 @@
                value="{{ request.form['polynomial_degree'] }}"></input>
     </div>
 
-    <p>filter column</p>
+    <p>filter criteria of data</p>
     <div class="form-group">
-        <label for="filter_column"></label>
-        <input type="text" name="filter_column"
-               placeholder="column of the data that has to be equal to the specified filter_value. Leave blank if no filter desired" class="form-control"
-               value="{{ request.form['filter_column'] }}"></input>
-    </div>
-
-    <p>filter value</p>
-    <div class="form-group">
-        <label for="filter_value"></label>
-        <input type="text" name="filter_value"
-               placeholder="filter_value" class="form-control"
-               value="{{ request.form['filter_value'] }}"></input>
+        <label for="filter_criteria"></label>
+        <input type="text" name="filter_criteria"
+               placeholder="filter_criteria" class="form-control"
+               value="{{ request.form['filter_criteria'] }}"></input>
     </div>
 
     <div class="form-group">

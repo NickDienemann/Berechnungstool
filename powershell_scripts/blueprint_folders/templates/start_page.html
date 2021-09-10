@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>
+        {% block title %} Available Storages {% endblock %}
+        <form method="post">
+            <button name="save_button" type="submit" class="btn btn-primary" value="{{ request.form['submit_type'] }}" >Save</button>
+        </form>
+    </h1>
+
+    <div class="storages_grid_container">
+
+
+        <div class= "column_name" style="background-color: grey;grid-column-start: 1;grid-column-end: 2;grid-row-start: 1;grid-row-end: 2;">
+            <b> Storage name </b>
+        </div>
+
+        <div class= "column_name" style="background-color: grey;grid-column-start: 2;grid-column-end: 3;grid-row-start: 1;grid-row-end: 2;" >
+            <b> Storage key structure </b>
+        </div>
+
+        <div class= "column_name" style="background-color: grey;grid-column-start: 3;grid-column-end: 4;grid-row-start: 1;grid-row-end: 2;" >
+            <b> Options </b>
+        </div>
+
+        {% for storage_name,storage_instance in storage_manager.get_cache().items() %}
+        <div class= "storage_name" style="grid-column-start: 1;grid-column-end: 2;">
+            <a href="{{ url_for('storage', storage_name=storage_name) }}">
+                {{storage_name}}
+            </a>
+        </div>
+
+        <div class="storage_key_structure" style="grid-column-start: 2;grid-column-end: 3;">
+            <div class="key_structure_grid_container">
+                {% for index,key_element in storage_instance.get_key_structure().items() %}
+                <div style='grid-row-start: "{{index+1}}";grid-row-end: "{{index+2}}";'>
+                    {{key_element.name}} in {{key_element.unit}} 
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="option" style="grid-column-start: 3;grid-column-end: 4;">
+            <form name="deletion_form_{{storage_name}}" method="post">
+                <button name="delete_button___{{storage_name}}" type="submit" class="btn btn-primary" value="{{ request.form['submit_type'] }}" onclick=confirm_deletion() >Delete</button>
+            </form>
+            <script>
+                //comfirm the deletion. if not confirmed abort the deletion
+                function confirm_deletion(){
+                    var confirmation=confirm("Are you sure to delete {{storage_name}}?");
+                    if(confirmation==false){
+                        var elements= document.getElementsByName("deletion_form_{{storage_name}}");
+                        var i;
+                        for(i=0;i<elements.length;i++){
+                            elements[i].method="GET";
+                        }
+                    } 
+                }
+            </script>
+        </div>
+        {% endfor %}
+
+        <script >
+            var elements = document.getElementsByClassName("storage_name");
+            var i;
+            for (i=0; i< elements.length;i++){
+                if (i%2==0){
+                    elements[i].style.backgroundColor="#BDBDBD";
+                } else {
+                    elements[i].style.backgroundColor="#D1D0D0";
+                }
+                
+                //arange in grid
+                elements[i].style.gridRowStart=i+2;
+                elements[i].style.gridRowEnd=i+3;
+            }
+
+            var elements = document.getElementsByClassName("storage_key_structure");
+            var i;
+            for (i=0; i< elements.length;i++){
+                if (i%2==0){
+                    elements[i].style.backgroundColor="#BDBDBD";
+                } else {
+                    elements[i].style.backgroundColor="#D1D0D0";
+                }
+                
+                //arange in grid
+                elements[i].style.gridRowStart=i+2;
+                elements[i].style.gridRowEnd=i+3;
+            }
+
+            var elements = document.getElementsByClassName("option");
+            var i;
+            for (i=0; i< elements.length;i++){
+                if (i%2==0){
+                    elements[i].style.backgroundColor="#BDBDBD";
+                } else {
+                    elements[i].style.backgroundColor="#D1D0D0";
+                }
+                
+                //arange in grid
+                elements[i].style.gridRowStart=i+2;
+                elements[i].style.gridRowEnd=i+3;
+            }
+
+        </script>
+
+{% endblock %}

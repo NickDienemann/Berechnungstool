@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Add a new Storage element {% endblock %}</h1>
+
+<form method="post">
+    {% for pos, key_element in key_structure.items() %}
+
+    <p>Key {{pos}}: {{ key_element.name }}</p>
+    <div class="form-group">
+        <label for="{{ pos }}"></label>
+        <input type="text" name="{{ pos }}"
+               placeholder="value to be set for that key" class="form-control"
+               value="{{ request.form['{{ pos }}'] }}"></input>
+    </div>
+
+    {% endfor %}
+
+    <p>Points to evaluate</p>
+    <div class="form-group">
+        <label for="interpol_points"></label>
+        <input type="text" name="interpol_points"
+               placeholder="interpol_points" class="form-control"
+               value="{{ request.form['interpol_points'] }}"></input>
+    </div>
+
+    <p>Target value of interpolated variable</p>
+    <div class="form-group">
+        <label for="target_key_arg"></label>
+        <input type="text" name="target_key_arg"
+               placeholder="target_key_arg" class="form-control"
+               value="{{ request.form['target_key_arg'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+{% endblock %}
